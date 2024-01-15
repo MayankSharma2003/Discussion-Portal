@@ -1,0 +1,750 @@
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>Discussion-App</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    </head>
+    <style>
+        *{margin:0;
+        padding:0;font-family: monospace;}
+        .head{
+            background-color: rgb(10, 132, 159);
+            color:white;
+            padding:1%;
+            font-size: 42px;
+        }
+        #main{
+            display:flex;
+        }
+        #left{
+            background-color: azure;
+            padding:2%;
+            width:40%;
+            
+        }
+        #new_form{
+            background-color: rgb(47, 121, 249);
+            color:white;
+            font-size:20px;
+            border:none;
+            border-radius: 5px;  
+            padding:5px;
+        }
+        #search{
+            padding:5px;
+        }
+        #right{
+            width:60%;
+            padding:3%;
+            
+            background-color: rgb(198, 252, 252);
+        }
+        #para{
+            font-size:40px;
+            font-weight: bold;
+            
+        }
+        #para2
+        {
+            text-align: left;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        #subject{
+            padding: 5px;
+        }
+        #submit{
+            background-color: rgb(47, 121, 249);
+            color:white;
+            font-size:20px;
+            border:none;
+            border-radius: 5px;  
+            padding:5px;
+            float:right;
+        }
+        #list{
+            list-style-type:none;
+            cursor: pointer;
+        }
+        #list li{
+            background-color: white;
+            border:1px solid rgb(150, 150, 237);
+            border-radius: 5px;
+            padding:8px;
+            margin:5px;
+            font-size:20px;
+        }
+        #question{
+            padding:5px;
+        }
+        .heading
+        {
+            font-weight: bold;
+            font-size: 25px;
+        }
+        
+        .res{
+            color:gray;
+            font-size: 30px;
+        }
+        .asked{
+            background-color: white;
+            border:1px solid rgb(150, 150, 237);
+            border-radius: 5px;
+            padding:5px;
+            margin:5px;
+            font-size:20px;
+        }
+        #right2{
+            display: none;
+            width:60%;
+            padding:3%;
+            background-color: rgb(198, 252, 252);
+        }
+        #resolve{
+            float:right;
+            background-color: rgb(47, 121, 249);
+            color:white;
+            font-size:20px;
+            border:none;
+            border-radius: 5px;  
+            padding:5px;
+        }
+        .add{
+            color:gray;
+        }
+        #name{
+            padding:5px;
+        }
+        #comments{
+            padding: 5px;
+        }
+        #submit2{
+            float:right;
+            background-color: rgb(47, 121, 249);
+            color:white;
+            font-size:20px;
+            border:none;
+            border-radius: 5px;  
+            padding:5px;
+        }
+        #add{ 
+            display:none;
+            list-style-type: none;
+        }
+        #add li{
+            background-color: white;
+            border:1px solid rgb(150, 150, 237);
+            border-radius: 5px;
+            padding:5px;
+            margin:5px;
+            font-size:20px;
+        }
+        #no_match{
+            display: none;
+            background-color: white;
+            border:1px solid rgb(150, 150, 237);
+            border-radius: 5px;
+            padding:5px;
+            margin:5px;
+            font-size:20px;
+            font-weight: bold;
+        }
+       i{
+        cursor: pointer;
+       }
+       span{
+        cursor: pointer;
+       }
+       .left{
+        float:right;
+       }
+       .yellow{
+        background-color: yellow;
+       }
+    </style>
+    <body>
+        <h1 class="head">Discussion Portal</h1>
+        <div id="main">
+            <div id="left">
+              <div> <button id="new_form">New Question Form</button>
+                <input type="search" id="search" placeholder="Search Question...." onkeyup="search_fun()"></div>
+                <div class="ques">
+                    <ul id="list" >
+
+                    </ul>
+                </div>
+                <div id="no_match">No Match Found!</div>
+            </div>
+            <div id="right">
+                <p id="para">Welcome to Discussion Portal!</p>
+                <p id="para2">Enter the subject and question to get started</p><br><br>
+                
+                <input type="text" id="subject" placeholder="Subject" required><br><br>
+                <textarea id="question" placeholder="Question" rows="15" cols="90" required></textarea>
+                <button id="submit">Submit</button>
+            </div>
+            <div id="right2">
+                <h3 class="res">Question</h3>
+                <p class="asked"></p>
+                <button id="resolve">Resolve</button><br>
+                <h3 class="res">Response</h3>
+                <ul id="add"></ul><br><br>
+                <h2 class="add">Add Response</h2>
+                
+                <input type="text" id="name" placeholder="Enter Name"><br><br>
+                <textarea id="comments" placeholder="Enter Comments" rows="9" cols="90"></textarea>
+                <button id="submit2">Submit</button>
+            </div>
+        </div>
+    </body>
+   <script>
+    let count=0,l=0,r=0,d=0;
+    const data_arr=[];
+       let subject=document.getElementById("subject");
+        let question=document.getElementById("question");
+        let data=document.getElementById("submit");
+        let list=document.getElementById("list");
+        let res_btn=document.getElementById("resolve");
+        res_btn.addEventListener("click",resolve_btn);
+        window.addEventListener("load",load);
+        function load()
+        {
+            let get_obj=JSON.parse(localStorage.getItem("data"));
+          
+            for(let i=0;i<get_obj.length;i++)
+            {
+             
+                for(let j=0;j<get_obj[i].a1.length;j++)
+                {
+                 
+                    display(get_obj[i].a1[j],get_obj[i].a1[j+1],get_obj[i].a1[j+2],get_obj[i].a1[j+3]);
+                    break;
+                }
+                
+                
+            }
+
+        }
+        data.addEventListener("click",function()
+        {
+            if(subject.value.trim()==""||question.value.trim()=="")
+            {
+            alert("please fill out all the fields");
+            }
+        else{
+            create(subject.value.trim(),question.value.trim(),0,new Date());
+            subject.value="";
+            question.value="";
+            
+           }
+            
+        });
+        function create(v1,v2,v3,d)
+        {
+            display(v1,v2,v3,d);
+            store(v1,v2,v3,d);
+        }
+        function display(v1,v2,v3,d)
+        {
+            let item=document.createElement("li");
+            
+            item.setAttribute("class","demo");
+            item.setAttribute("id","sub-"+count);
+            // let v4=time(d);
+            
+            item.innerHTML=`<p class="heading">${v1}</p><span class="material-symbols-outlined left" id="star">star</span><p class="heading1">${v2}</p><p class="t"></p>`;
+          
+            
+            item.addEventListener("click",response);
+          
+            if(v3===1)
+            {
+                item.querySelector(".left").style.backgroundColor="yellow";
+            }
+            if(v3===0)
+            {
+                item.querySelector(".left").style.backgroundColor="none";
+            }
+            item.querySelector(".left").addEventListener("click",fav);
+      
+           
+            sub(v1,v2);
+            list.appendChild(item);
+            start(item.id,d);
+            count++;
+        }
+        function start(i,d)
+        {
+           // console.log(i);
+            let a= document.querySelector("#"+i);
+           // console.log(a);
+            setInterval(()=>{
+                var v4= time(d);
+               //console.log(v4);
+               let p=a.querySelector(".t");
+               
+               p.textContent=v4;
+            },1000);
+        }
+        function time(d)
+        {
+            let current_date=new Date();
+           // console.log(current_date);
+           // console.log(d);
+            d=new Date(d);
+            let timeDifference=current_date-d;
+            //console.log(timeDifference);
+            const seconds = Math.floor(timeDifference / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30);
+            const years=Math.floor(months/12);
+            
+            if(years>0)
+            {
+                return `${years} years${years>1?'s':''} ago `;
+            }
+            else if(months>0)
+            {
+                return `${months} month${months>1?'s':''} ago `;
+            }
+            else if(days>0)
+            {
+                return `${days} day${days>1?'s':''} ago `;
+            }
+            else if(hours>0)
+            {
+                return `${hours} hour${hours>1?'s':''} ago `;
+            }
+            else if(minutes>0)
+            {
+                return `${minutes} minute${minutes>1?'s':''} ago `;
+               
+            }
+            else
+            {
+                if(seconds<10)
+                {
+                    return "Just Now";
+                }
+                else{
+                     return `${seconds} seconds ago`;
+                    
+                }
+                
+            }
+            
+        }
+        function store(v1,v2,v3,d)
+        {
+            if(localStorage.getItem("data")==null)
+            {
+                localStorage.setItem("data",'[]');
+            }
+            let oldData=JSON.parse(localStorage.getItem("data"));
+            let obj={"a1":[v1,v2,v3,d],
+                      "a2":[]};
+            oldData.push(obj);
+            localStorage.setItem("data",JSON.stringify(oldData));
+        }
+        function search_fun()
+        {
+            let input=document.getElementById("search").value.toUpperCase();
+            let list=document.getElementById("list"); 
+           let li=list.getElementsByTagName("li"); 
+           let flag=false;
+           for(let i=0;i<li.length;i++)
+           {
+                let p=li[i].querySelector(".heading").innerHTML.toUpperCase();
+               // console.log(p.indexOf(input));
+                if(p.indexOf(input) > -1)
+                {
+                   li[i].style.display="";
+                    flag=true;
+                }
+                else{
+                    li[i].style.display="none";
+                    
+                }
+           }
+           if(flag==false)
+           {
+              for(let j=0;j<li.length;j++)
+              {
+                 let q=li[j].querySelector(".heading1").innerHTML.toUpperCase();
+                 if(q.indexOf(input)>-1)
+                 {
+                    li[j].style.display="";
+                    flag=true;
+                 }
+                 else{
+                    li[j].style.display="none";
+                 }
+              }
+           }
+           if(flag===true)
+           {
+            document.getElementById("no_match").style.display="none";
+           }
+           else{
+            document.getElementById("no_match").style.display="block";
+           }
+         
+        }
+        function response(a)
+        {
+            if(a.target.classList.contains("left"))
+            {
+                right.style.display="block";
+            right2.style.display="none";
+            }
+            else{
+                right.style.display="none";
+            right2.style.display="block";
+            let z;
+            if(a.target.classList.contains("demo"))
+            {
+                
+            document.querySelector(".asked").innerHTML=a.target.innerHTML;
+            document.querySelector(".asked").setAttribute("id",a.target.id);
+             z=a.target.id;
+            }
+            else{
+              
+                document.querySelector(".asked").innerHTML=a.target.parentNode.innerHTML;
+                document.querySelector(".asked").setAttribute("id",a.target.parentNode.id);
+                z=a.target.parentNode.id;
+            }
+            
+            let x=z.split("-");
+            add.innerHTML="";
+            r=0;d=0;
+            load_res(z);
+            }
+            
+        
+        }
+        let new_form=document.getElementById("new_form");
+        new_form.addEventListener("click",function()
+        {
+            right.style.display="block";
+            right2.style.display="none";
+        })
+        let submit2=document.getElementById("submit2");
+        submit2.addEventListener("click",res);
+        function res()
+        {
+            
+            let name=document.getElementById("name");
+            let comments=document.getElementById("comments");
+            if(name.value.trim()==""||comments.value.trim()=="")
+            {
+                alert("Please fill out all the fields");
+            }
+            else{
+            create_res(name.value,comments.value,0,0);
+            let x=document.querySelector(".asked").id;
+            x=x.split("-");
+            store_res(x[1],name.value,comments.value);
+            name.value="";
+            comments.value="";
+        }
+    }
+        function create_res(v1,v2,like,dislike)
+        {
+            let x=document.querySelector(".asked").id;
+            x=x.split("-");
+            let ob=JSON.parse(localStorage.getItem("data"));
+            let a=ob[x[1]].a2.length; 
+            let rp=document.createElement("li");
+            if(like===undefined||dislike===undefined)
+            {
+                like=0;
+                dislike=0;
+            }
+            rp.innerHTML=`<p class="heading">${v1}</p><p>${v2}</p>`+'<i class="material-symbols-outlined" id="up">thumb_up</i>'+`${like}`+'<span class="material-symbols-outlined" id="down">thumb_down</span>'+`${dislike}`;
+            rp.querySelector("#up").setAttribute("id","like-"+r);
+            rp.querySelector("#down").setAttribute("id","dislike-"+d);
+            add.appendChild(rp);
+            add.style.display="block"; 
+            let bt=rp.querySelector("i").id;
+         //  console.log(bt);
+            let bt2=rp.querySelector("span").id;
+            let v=bt.split("-");
+            rp.querySelector("#"+bt2).addEventListener("click",down);
+            rp.querySelector("#"+bt2).addEventListener("click",function(e)
+            {
+                let id=e.target.id;
+                id=id.split("-");
+                rp.innerHTML="";
+                z=document.querySelector(".asked").id;
+                z=z.split("-");
+                let ob=JSON.parse(localStorage.getItem("data"));
+                dislike=ob[z[1]].a2[v[1]].dislike;
+                rp.innerHTML=`<p class="heading">${v1}</p><p>${v2}</p>`+'<i class="material-symbols-outlined" id="up">thumb_up</i>'+`${like}`+'<span class="material-symbols-outlined" id="down">thumb_down</span>'+`${dislike}`;
+                rp.querySelector("#up").setAttribute("id","like-"+id[1]);
+                rp.querySelector("#down").setAttribute("id","dislike-"+id[1]);
+            });
+            
+            rp.querySelector("#"+bt).addEventListener("click",up);
+            rp.querySelector("#"+bt).addEventListener("click",function(e)
+            {
+                let id=e.target.id;
+                id=id.split("-");
+                rp.innerHTML="";
+                z=document.querySelector(".asked").id;
+                z=z.split("-");
+                let ob=JSON.parse(localStorage.getItem("data"));
+                like=ob[z[1]].a2[v[1]].like;
+                rp.innerHTML=`<p class="heading">${v1}</p><p>${v2}</p>`+'<i class="material-symbols-outlined" id="up">thumb_up</i>'+`${like}`+'<span class="material-symbols-outlined" id="down">thumb_down</span>'+`${dislike}`;
+                rp.querySelector("#up").setAttribute("id","like-"+id[1]);
+                rp.querySelector("#down").setAttribute("id","dislike-"+id[1]);
+            });
+           r++;
+           d++;
+        }
+        function store_res(i,v1,v2)//store response in local storage
+        {
+            let obj2=JSON.parse(localStorage.getItem("data"));
+           
+           let obj_res={"name":v1,"comments":v2,"like":0,"dislike":0};
+         
+            obj2[i].a2.push(obj_res);
+            localStorage.setItem("data",JSON.stringify(obj2));
+        }
+        function load_res(z)
+        {
+            console.log(z);
+            z=z.split("-");
+            let obj2=JSON.parse(localStorage.getItem("data"));
+            console.log(obj2[z[1]])
+            for(let i=0;i<obj2[z[1]].a2.length;i++)
+            {
+               // console.log(obj2[z[1]])
+                v1=obj2[z[1]].a2[i].name;
+                 v2=obj2[z[1]].a2[i].comments;
+                 like=obj2[z[1]].a2[i].like;
+                 dislike=obj2[z[1]].a2[i].dislike;
+                 if(v1!=null&&v2!=null)
+                   {
+                      create_res(v1,v2,like,dislike);
+                   }
+            }
+           
+        }
+        function resolve_btn()
+        {
+            right.style.display="block";
+            right2.style.display="none";
+            let m=document.querySelector(".asked").id;
+            m=m.split("-");
+          //  console.log(m[1]);
+            let obj=JSON.parse(localStorage.getItem("data"));
+          //  console.log(obj);
+            obj.splice(m[1],1);
+            data_arr.splice(m[1],1);
+            localStorage.setItem("data",JSON.stringify(obj));
+           document.querySelector(`#sub-${m[1]}`).remove();
+           for(let i=m[1];i<=obj.length;i++)
+           {
+            //  console.log(i);
+              let a=document.getElementById("sub-"+`${i}`);
+              console.log(a);
+              a.setAttribute("id","sub-"+`${i-1}`);
+           }
+         //  list.innerHTML="";
+         //  count=0;
+         //  load();
+        }
+        function sub(v1,v2)
+        {
+            let obj={"a1":[v1,v2]};
+          data_arr.push(obj);
+        }
+        function up(e)
+        {
+            let m=document.querySelector(".asked").id;
+            id2=m;
+            m=m.split("-");
+           let id=e.target.id;
+           id=id.split("-");
+           let ob=JSON.parse(localStorage.getItem("data"));
+           ob[m[1]].a2[id[1]].like=ob[m[1]].a2[id[1]].like+1;
+           localStorage.setItem("data",JSON.stringify(ob));
+           ob=JSON.parse(localStorage.getItem("data"));
+           for(let i=0;i<ob[m[1]].a2.length-1;i++)
+           {
+                for(let j=i+1;j<ob[m[1]].a2.length;j++)
+                {
+                  
+                    if((ob[m[1]].a2[i].like-ob[m[1]].a2[i].dislike)<(ob[m[1]].a2[j].like-ob[m[1]].a2[j].dislike))
+                    {
+                        temp=ob[m[1]].a2[i];
+                        ob[m[1]].a2[i]=ob[m[1]].a2[j];
+                        ob[m[1]].a2[j]=temp;
+                    }
+                }
+           }
+        
+           localStorage.setItem("data",JSON.stringify(ob));
+           r=0;d=0;
+           add.innerHTML="";
+           load_res(id2);
+        }
+        function down(e)
+        {
+            let n=document.querySelector(".asked").id;
+            let id2=n;
+            n=n.split("-");
+            let id=e.target.id;
+            id=id.split("-");
+            let ob=JSON.parse(localStorage.getItem("data"));
+           ob[n[1]].a2[id[1]].dislike=ob[n[1]].a2[id[1]].dislike+1;
+           localStorage.setItem("data",JSON.stringify(ob));
+           ob=JSON.parse(localStorage.getItem("data"));
+           for(let i=0;i<ob[n[1]].a2.length-1;i++)
+           {
+                for(let j=i+1;j<ob[n[1]].a2.length;j++)
+                {
+                    if((ob[n[1]].a2[i].like-ob[n[1]].a2[i].dislike)<(ob[n[1]].a2[j].like-ob[n[1]].a2[j].dislike))
+                    {
+                        temp=ob[n[1]].a2[i];
+                        ob[n[1]].a2[i]=ob[n[1]].a2[j];
+                        ob[n[1]].a2[j]=temp;
+                    }
+                }
+           }
+         
+           localStorage.setItem("data",JSON.stringify(ob));
+           r=0;d=0;
+           add.innerHTML="";
+           load_res(id2);
+        }
+      function fav(e)
+      { 
+         let ob=JSON.parse(localStorage.getItem("data"));
+         console.log(ob);
+         let id=e.target.parentNode.id;
+         id=id.split("-");
+         if(ob[id[1]].a1[2]===1)
+         {
+            ob[id[1]].a1[2]=0;
+            e.target.classList.remove("yellow");
+         }
+         else if(ob[id[1]].a1[2]===0)
+         {
+            ob[id[1]].a1[2]=1;
+            e.target.classList.add("yellow");
+         }
+        localStorage.setItem("data",JSON.stringify(ob));
+        ob=JSON.parse(localStorage.getItem("data")); 
+            for(let i=0;i<ob.length-1;i++)
+            {
+                for(let j=i+1;j<ob.length;j++)
+                {
+                    if(ob[i].a1[2]<ob[j].a1[2])
+                    {
+                        temp=ob[i];
+                        ob[i]=ob[j];
+                        ob[j]=temp;
+                    }
+                }
+            }
+            localStorage.setItem("data",JSON.stringify(ob));
+            list.innerHTML="";
+            count=0;
+            load();
+      }
+     
+      
+   </script>
+   </html> -->
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        #stopwatch {
+            font-size: 2em;
+            margin: 50px;
+        }
+
+        #controls {
+            margin-top: 20px;
+        }
+
+        button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="stopwatch">0:00:00</div>
+    <div id="controls">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="reset">Reset</button>
+    </div>
+
+    <script>
+        let startTime = 0;
+        let interval;
+        let isRunning = false;
+
+        const stopwatch = document.getElementById('stopwatch');
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+        const resetButton = document.getElementById('reset');
+
+        function updateTime() {
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - startTime;
+            const formattedTime = formatTime(elapsedTime);
+            stopwatch.textContent = formattedTime;
+        }
+
+        function formatTime(milliseconds) {
+            const hours = Math.floor(milliseconds / 3600000);
+            const minutes = Math.floor((milliseconds % 3600000) / 60000);
+            const seconds = Math.floor((milliseconds % 60000) / 1000);
+
+            return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        startButton.addEventListener('click', () => {
+            if (!isRunning) {
+                startTime = Date.now() - (startTime ? startTime : 0);
+                interval = setInterval(updateTime, 1000);
+                isRunning = true;
+            }
+        });
+
+        stopButton.addEventListener('click', () => {
+            if (isRunning) {
+                clearInterval(interval);
+                isRunning = false;
+            }
+        });
+
+        resetButton.addEventListener('click', () => {
+            clearInterval(interval);
+            startTime = 0;
+            stopwatch.textContent = '0:00:00';
+            isRunning = false;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title>Discussion Portal</title>
+        <link rel="stylesheet" href="discussioncss.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    </head>
+    <body>
+            <h1 id="first-h1">Discussion Portal</h1>
+            <div id="main">
+                <div id="left">
+                    <div id="left-top">
+                        <button type="button" name="new-question-form" id="new-form">New Question Form</button>
+                        <input type="text" name="search" placeholder="Search Questions..." id="search-question"/>
+                    </div><br>
+                    <div id="left-bottom">
+                        <ul id="list"></ul>
+                    </div>
+                </div>
+
+                <div id="right1">
+                    <h1 class="margin-left">Welcome to Discussion Portal!</h1>
+                    <h4 class="margin-left">Enter a Subject and Question to get started...</h4><br>
+                    <input type="text" name="subject" placeholder="Subject...." id="subject" class="margin-left"/><br><br>
+                    <textarea rows=5 cols = 50 name ="question" placeholder="Question..." id="question" class="margin-left"></textarea></br><br>
+                    <button type="submit" name="submit" id="submit" style="margin-left: 410px;">Submit</button>
+                </div>
+
+                <div id="right2">
+                    <div id="right-top">
+                        <h2 class="margin-left" style="color: grey;">Questions</h2>
+                        <p class="margin-left" class="para"></p>
+                        <button type="submit" name="resolve" id="resolve" style="margin-left: 403px;">Resolve</button>
+                    </div>
+                    <div id="right-middle">
+                        <h2 class="margin-left" style="color:grey">Response</h2>
+                        <ul class="margin-left" id="namelist"></ul>
+                    </div>
+                    <div id="right-bottom">
+                        <h2 class="margin-left" style="color:grey">Add Response</h2>
+                        <input type="text" name="name" placeholder="Enter name...." id="name" class="margin-left"/><br><br>
+                        <textarea rows=5 cols = 50 name ="response" placeholder="Response..." id="response" class="margin-left"></textarea></br><br>
+                        <button type="submit-res" name="submit-res" id="submit-res" style="margin-left: 410px;">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <script src="discussiontodo.js"></script>
+    </body>
+</html>
